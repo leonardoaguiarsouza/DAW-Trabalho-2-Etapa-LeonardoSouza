@@ -6,12 +6,20 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -20,6 +28,8 @@ import org.hibernate.validator.constraints.NotBlank;
  *
  * @author Leonardo
  */
+@Entity
+@Table(name = "unidade_condomicional")
 public class UnidadeCondominal implements Serializable{
     @Id
     @SequenceGenerator(name = "seq_u_condominal", sequenceName = "seq_u_condominal_id",
@@ -41,7 +51,15 @@ public class UnidadeCondominal implements Serializable{
     @NotNull(message = "O numero do quarto deve ser informado")
     @Column(name = "numeroQuarto", nullable = false, columnDefinition = ("integer"))
     private Integer numeroQuarto;
-
+    @ManyToOne
+    @JoinTable(name = "proprietario",
+            joinColumns = 
+            @JoinColumn(name = "unidade_condomicional", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = 
+            @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false), 
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"unidade_condomicional", "pessoa"})})
+    private List<Pessoa> prorietario = new ArrayList<>();
+    
     public UnidadeCondominal() {
     }
 
@@ -139,6 +157,20 @@ public class UnidadeCondominal implements Serializable{
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the prorietario
+     */
+    public List<Pessoa> getProrietario() {
+        return prorietario;
+    }
+
+    /**
+     * @param prorietario the prorietario to set
+     */
+    public void setProrietario(List<Pessoa> prorietario) {
+        this.prorietario = prorietario;
     }
     
 }

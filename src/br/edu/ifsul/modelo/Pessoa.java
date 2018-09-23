@@ -6,6 +6,8 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +15,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
@@ -56,7 +63,15 @@ public class Pessoa implements Serializable{
     @NotBlank(message = "O email não pode ser em branco")
     @Column(name = "email", nullable = false, length = 50)
     private String email;
-
+    @OneToMany
+    @JoinTable(name = "proprietario",
+            joinColumns = 
+            @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = 
+            @JoinColumn(name = "unidade_condomicional", referencedColumnName = "id", nullable = false), 
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"pessoa", "unidade_condomicional"})})
+    private List<UnidadeCondominal> prorietario = new ArrayList<>();
+    
     public Pessoa() {
     }
 
@@ -129,6 +144,20 @@ public class Pessoa implements Serializable{
      */
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    /**
+     * @return the prorietario
+     */
+    public List<UnidadeCondominal> getProrietario() {
+        return prorietario;
+    }
+
+    /**
+     * @param prorietario the prorietario to set
+     */
+    public void setProrietario(List<UnidadeCondominal> prorietario) {
+        this.prorietario = prorietario;
     }
     
     

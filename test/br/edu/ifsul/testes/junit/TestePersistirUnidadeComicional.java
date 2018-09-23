@@ -3,6 +3,7 @@ package br.edu.ifsul.testes.junit;
 import br.edu.ifsul.jpa.EntityManagerUtil;
 
 import br.edu.ifsul.modelo.Pessoa;
+import br.edu.ifsul.modelo.UnidadeCondominal;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import org.junit.After;
@@ -18,11 +19,11 @@ import static org.junit.Assert.*;
  * @email jorge.bavaresco@passofundo.ifsul.edu.br
  * @organization IFSUL - Campus Passo Fundo
  */
-public class TestePersistirPessoa {
+public class TestePersistirUnidadeComicional {
     
     EntityManager em;
 
-    public TestePersistirPessoa() {
+    public TestePersistirUnidadeComicional() {
     }
 
     @Before
@@ -39,11 +40,11 @@ public class TestePersistirPessoa {
     public void teste(){
         boolean erro = false;
         try {
-            Pessoa obj = new Pessoa();
-            obj.setNome("Teste 2");
-            obj.setCpf("025.175.320-44");
-            obj.setTelefone("(54)99253-3633");
-            obj.setEmail("leonardo.aguiarsouza@gmail.com");
+            UnidadeCondominal obj = new UnidadeCondominal();
+            obj.setNumero("145");
+            obj.setDescricao("bla bla bla bla bla");
+            obj.setArea(125.20);
+            obj.setNumeroQuarto(2);
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();
