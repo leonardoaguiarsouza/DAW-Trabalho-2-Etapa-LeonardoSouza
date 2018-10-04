@@ -3,7 +3,7 @@ package br.edu.ifsul.testes.junit;
 import br.edu.ifsul.jpa.EntityManagerUtil;
 
 import br.edu.ifsul.modelo.Pessoa;
-import br.edu.ifsul.modelo.UnidadeCondominal;
+import br.edu.ifsul.modelo.Recurso;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
 import org.junit.After;
@@ -19,11 +19,11 @@ import static org.junit.Assert.*;
  * @email jorge.bavaresco@passofundo.ifsul.edu.br
  * @organization IFSUL - Campus Passo Fundo
  */
-public class TestePersistirUnidadeComicional {
+public class TestePersistirRecurso {
     
     EntityManager em;
 
-    public TestePersistirUnidadeComicional() {
+    public TestePersistirRecurso() {
     }
 
     @Before
@@ -40,11 +40,8 @@ public class TestePersistirUnidadeComicional {
     public void teste(){
         boolean erro = false;
         try {
-            UnidadeCondominal obj = new UnidadeCondominal();
-            obj.setNumero("145");
-            obj.setDescricao("bla bla bla bla bla");
-            obj.setArea(125.20);
-            obj.setNumeroQuarto(2);
+            Recurso obj = new Recurso();
+            obj.setDescricao("Teste 2");
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();

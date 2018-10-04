@@ -13,11 +13,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.ForeignKey;
 
 /**
  *
@@ -43,6 +46,10 @@ public class Mensalidades implements Serializable{
     @Temporal(TemporalType.DATE)    
     @Column(name = "data_pagamento")
     private Calendar dataPagamento;
+    @ManyToOne
+    @JoinColumn(name = "aluguel", referencedColumnName = "id", nullable = false)
+    @ForeignKey(name = "fk_mensalidade_aluguel")
+    private Aluguel aluguel;
 
     public Mensalidades() {
     }
@@ -140,6 +147,20 @@ public class Mensalidades implements Serializable{
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the aluguel
+     */
+    public Aluguel getAluguel() {
+        return aluguel;
+    }
+
+    /**
+     * @param aluguel the aluguel to set
+     */
+    public void setAluguel(Aluguel aluguel) {
+        this.aluguel = aluguel;
     }
     
     

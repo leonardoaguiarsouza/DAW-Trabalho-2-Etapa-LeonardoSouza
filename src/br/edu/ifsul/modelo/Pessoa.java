@@ -63,14 +63,6 @@ public class Pessoa implements Serializable{
     @NotBlank(message = "O email não pode ser em branco")
     @Column(name = "email", nullable = false, length = 50)
     private String email;
-    @OneToMany
-    @JoinTable(name = "proprietario",
-            joinColumns = 
-            @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = 
-            @JoinColumn(name = "unidade_condomicional", referencedColumnName = "id", nullable = false), 
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"pessoa", "unidade_condomicional"})})
-    private List<UnidadeCondominal> prorietario = new ArrayList<>();
     
     public Pessoa() {
     }
@@ -144,20 +136,6 @@ public class Pessoa implements Serializable{
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * @return the prorietario
-     */
-    public List<UnidadeCondominal> getProrietario() {
-        return prorietario;
-    }
-
-    /**
-     * @param prorietario the prorietario to set
-     */
-    public void setProrietario(List<UnidadeCondominal> prorietario) {
-        this.prorietario = prorietario;
     }
     
     

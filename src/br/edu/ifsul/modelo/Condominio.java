@@ -6,15 +6,26 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -50,6 +61,16 @@ public class Condominio implements Serializable{
     @Length(max = 9, message = "O cep não pode ter mais de {max} caracteres")
     @Column(name = "cep", length = 9, nullable = false)
     private String cep;
+    @OneToMany(mappedBy = "condominio", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<UnidadeCondominial> ucs = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(name = "rec_con",
+            joinColumns = @JoinColumn(name = "condominio", referencedColumnName = "id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "recurso", referencedColumnName = "id", nullable = false),
+            uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"recurso", "condominio"})})
+    private List<Recurso> recursos = new ArrayList<>();
 
     public Condominio() {
     }
@@ -148,6 +169,34 @@ public class Condominio implements Serializable{
             return false;
         }
         return true;
+    }
+
+    /**
+     * @return the ucs
+     */
+    public List<UnidadeCondominial> getUcs() {
+        return ucs;
+    }
+
+    /**
+     * @param ucs the ucs to set
+     */
+    public void setUcs(List<UnidadeCondominial> ucs) {
+        this.ucs = ucs;
+    }
+
+    /**
+     * @return the recursos
+     */
+    public List<Recurso> getRecursos() {
+        return recursos;
+    }
+
+    /**
+     * @param recursos the recursos to set
+     */
+    public void setRecursos(List<Recurso> recursos) {
+        this.recursos = recursos;
     }
     
     

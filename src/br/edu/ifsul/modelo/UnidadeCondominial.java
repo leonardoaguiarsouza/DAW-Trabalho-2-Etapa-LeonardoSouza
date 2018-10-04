@@ -16,11 +16,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.ForeignKey;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -29,12 +33,12 @@ import org.hibernate.validator.constraints.NotBlank;
  * @author Leonardo
  */
 @Entity
-@Table(name = "unidade_condomicional")
-public class UnidadeCondominal implements Serializable{
+@Table(name = "unidade_condominial")
+public class UnidadeCondominial implements Serializable{
     @Id
-    @SequenceGenerator(name = "seq_u_condominal", sequenceName = "seq_u_condominal_id",
+    @SequenceGenerator(name = "seq_u_condominial", sequenceName = "seq_u_condominial_id",
             allocationSize = 1)
-    @GeneratedValue(generator = "seq_u_condominal", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "seq_u_condominial", strategy = GenerationType.SEQUENCE)
     private Integer id;
     @NotNull(message = "O número não pode ser nulo")
     @NotBlank(message = "O número não pode ser em branco")
@@ -43,7 +47,7 @@ public class UnidadeCondominal implements Serializable{
     private String numero;
     @NotNull(message = "A descrição não pode ser nula")
     @NotBlank(message = "A descrição não pode ser em branco")
-    @Column(name = "descricao", nullable = false) 
+    @Column(name = "descricao", columnDefinition = "text") 
     private String descricao;
     @NotNull(message = "A area deve ser informada")
     @Column(name = "area", nullable = false, columnDefinition = ("decimal(10,2)"))
@@ -51,16 +55,21 @@ public class UnidadeCondominal implements Serializable{
     @NotNull(message = "O numero do quarto deve ser informado")
     @Column(name = "numeroQuarto", nullable = false, columnDefinition = ("integer"))
     private Integer numeroQuarto;
-    @ManyToOne
+    @ManyToMany
     @JoinTable(name = "proprietario",
             joinColumns = 
-            @JoinColumn(name = "unidade_condomicional", referencedColumnName = "id", nullable = false),
+            @JoinColumn(name = "unidade_condominial", referencedColumnName = "id", nullable = false),
             inverseJoinColumns = 
             @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false), 
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"unidade_condomicional", "pessoa"})})
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"unidade_condominial", "pessoa"})})
     private List<Pessoa> prorietario = new ArrayList<>();
+    @NotNull(message = "O condominio deve ser informado")
+    @ManyToOne
+    @JoinColumn(name = "condominio", referencedColumnName = "id", nullable = false)
+    @ForeignKey(name = "fk_unidadeCondominial_condominio")
+    private Condominio condominio;
     
-    public UnidadeCondominal() {
+    public UnidadeCondominial() {
     }
 
     
@@ -152,7 +161,7 @@ public class UnidadeCondominal implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final UnidadeCondominal other = (UnidadeCondominal) obj;
+        final UnidadeCondominial other = (UnidadeCondominial) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -171,6 +180,20 @@ public class UnidadeCondominal implements Serializable{
      */
     public void setProrietario(List<Pessoa> prorietario) {
         this.prorietario = prorietario;
+    }
+
+    /**
+     * @return the condominio
+     */
+    public Condominio getCondominio() {
+        return condominio;
+    }
+
+    /**
+     * @param condominio the condominio to set
+     */
+    public void setCondominio(Condominio condominio) {
+        this.condominio = condominio;
     }
     
 }
