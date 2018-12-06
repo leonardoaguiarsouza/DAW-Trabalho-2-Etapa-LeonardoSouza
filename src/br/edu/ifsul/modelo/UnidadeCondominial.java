@@ -55,14 +55,10 @@ public class UnidadeCondominial implements Serializable{
     @NotNull(message = "O numero do quarto deve ser informado")
     @Column(name = "numeroQuarto", nullable = false, columnDefinition = ("integer"))
     private Integer numeroQuarto;
-    @ManyToMany
-    @JoinTable(name = "proprietario",
-            joinColumns = 
-            @JoinColumn(name = "unidade_condominial", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = 
-            @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false), 
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"unidade_condominial", "pessoa"})})
-    private List<Pessoa> prorietario = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "pessoa", referencedColumnName = "id", nullable = false)
+    @ForeignKey(name = "fk_unidade_pessoa")
+    private Pessoa pessoa;
     @NotNull(message = "O condominio deve ser informado")
     @ManyToOne
     @JoinColumn(name = "condominio", referencedColumnName = "id", nullable = false)
@@ -169,17 +165,14 @@ public class UnidadeCondominial implements Serializable{
     }
 
     /**
-     * @return the prorietario
+     * @return the pessoa
      */
-    public List<Pessoa> getProrietario() {
-        return prorietario;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    /**
-     * @param prorietario the prorietario to set
-     */
-    public void setProrietario(List<Pessoa> prorietario) {
-        this.prorietario = prorietario;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
     }
 
     /**

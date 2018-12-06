@@ -75,6 +75,14 @@ public class Condominio implements Serializable{
     public Condominio() {
     }
 
+    public void adicionarUC(UnidadeCondominial obj) {
+        obj.setCondominio(this);
+        this.ucs.add(obj);
+      }
+
+      public void removerUnidadeCondominal(int index) {
+        this.ucs.remove(index);
+      }
     
     /**
      * @return the id

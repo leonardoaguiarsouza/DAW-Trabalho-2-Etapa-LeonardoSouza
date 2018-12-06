@@ -70,6 +70,14 @@ public class Aluguel implements Serializable{
     public Aluguel() {
     }
 
+    public void adicionarMensalidades(Mensalidades obj) {
+        obj.setAluguel(this);
+        this.mensalidades.add(obj);
+      }
+
+      public void removerMensalidades(int index) {
+        this.mensalidades.remove(index);
+      }
     
     /**
      * @return the id

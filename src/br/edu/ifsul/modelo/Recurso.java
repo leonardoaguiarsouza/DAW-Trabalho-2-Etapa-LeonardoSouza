@@ -41,13 +41,6 @@ public class Recurso implements Serializable{
     @NotBlank(message = "A descrição não pode ser em branco")
     @Column(name = "descricao", nullable = false, length = 50) 
     private String descricao;
-    @ManyToMany
-    @JoinTable(name = "rec_con",
-            joinColumns = @JoinColumn(name = "recurso", referencedColumnName = "id", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "condominio", referencedColumnName = "id", nullable = false),
-            uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"recurso", "condominio"})})
-     private List<Condominio> condominios = new ArrayList<>();
 
     public Recurso() {
     }
@@ -104,20 +97,5 @@ public class Recurso implements Serializable{
         }
         return true;
     }
-
-    /**
-     * @return the condominios
-     */
-    public List<Condominio> getCondominios() {
-        return condominios;
-    }
-
-    /**
-     * @param condominios the condominios to set
-     */
-    public void setCondominios(List<Condominio> condominios) {
-        this.condominios = condominios;
-    }
-    
     
 }
